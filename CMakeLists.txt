@@ -9,4 +9,4 @@ project(LoadBalancer)
 
 add_executable(load_balancer src/load_balancer/main.cpp)
 add_executable(user_sim src/user_sim/main.cpp src/user_sim/request.cpp)
-add_executable(work_nodes src/work_nodes/main.cpp)
+add_executable(work_nodes src/work_nodes/main.cpp src/work_nodes/node.cpp)

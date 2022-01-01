@@ -34,7 +34,7 @@ int Request::sendJobRequest() {
     serv_addr.sin_port = htons(serverPort);
     inet_pton(AF_INET, serverIP.c_str(), &(serv_addr.sin_addr));
 
-    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    //serv_addr.sin_addr.s_addr = INADDR_ANY;
 
     // send UDP Request
     msg = std::to_string(requestTime);
