@@ -6,7 +6,7 @@ using namespace std;
 
 
 #define LOAD_BALANCER_IP  "127.0.0.1"
-#define LOAD_BALANCER_PORT 20000
+#define LOAD_BALANCER_PORT 50001
 
 int main() {
     int nodeWeight = 0;
