@@ -18,4 +18,7 @@ int main() {
 
     // LoadBalancer * loadbalancer = new LoadBalancer(jobs, nodes);
     // thread balancerThread(&LoadBalancer::run, loadbalancer); // start load balancer threads
+    jobsThread.join();
+    nodesThread.join();
+    
 }
