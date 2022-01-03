@@ -10,7 +10,7 @@ using namespace std;
 
 
 Node::Node(string loadBalancerIP,int loadbalancerPort, int NodeWeight):loadBalancerIP(loadBalancerIP),
-    loadbalancerPort(loadbalancerPort), nodeWeight(nodeWeight){
+    loadbalancerPort(loadbalancerPort), nodeWeight(NodeWeight){
     
     // open socket
     if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -29,21 +29,20 @@ int Node::loadbalancerRegisteration() {
     // send UDP Request
     struct sockaddr_in localAddress;
     socklen_t addressLength = sizeof(localAddress);
-    getsockname(sock, (struct sockaddr*)&localAddress,   \
-                &addressLength);
 
-    string ip(inet_ntoa(  localAddress.sin_addr));
-    msg = "Register: " 
-        +  ip
-        + "\n port: "
-        + to_string((int) ntohs(localAddress.sin_port))
-        + "\n weight: " 
-        + to_string(nodeWeight);
+    msg = "weight: " + to_string(nodeWeight);
         
     sendto(sock,  msg.c_str() , msg.length(),
     MSG_CONFIRM, (const struct sockaddr *) &serv_addr, 
         sizeof(serv_addr));
 
-    close(sock);
+    getsockname(sock, (struct sockaddr*)&localAddress,   \
+                &addressLength);
+    string ip(inet_ntoa(localAddress.sin_addr));
+
+    auto str =  "ip: " +  ip
+        + "\nport: "
+        + to_string((int) ntohs(localAddress.sin_port));
+    cout << str << endl;
     return 0;
 }

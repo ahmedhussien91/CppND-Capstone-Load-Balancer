@@ -31,7 +31,6 @@ public:
     //mutex Jobs_getMutex() {return mtx;}
     vector<Job*> Jobs_getJobsList() {return requests;}
     void run();
-    void processIn(char * buffer, int len, sockaddr * client, int client_len);
     void sortByRemainingTime(vector<Job> &job_list);
     void updateRemainingTimeForNewElements(vector<Job> & job_list);
     int calculateTQ(vector<Job> &job_list);

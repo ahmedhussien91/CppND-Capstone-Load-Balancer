@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <limits>
 #include "node.h"
 
 using namespace std;
@@ -10,21 +11,29 @@ using namespace std;
 
 int main() {
     int nodeWeight = 0;
-    cout << "please enter Node Weight";
+    cout << "please enter Node Weight: ";
     cin >> nodeWeight;
-    cout << "connecting to " << LOAD_BALANCER_IP << "on port " << LOAD_BALANCER_PORT << endl;
-
-    unique_ptr<Node> node = make_unique<Node>(LOAD_BALANCER_IP, LOAD_BALANCER_PORT, nodeWeight);
-    if (node->error_flag == -1)
-        return -1;
-
-    if (!node->loadbalancerRegisteration()){
-        cout << "node registered";
-
+    if (cin.fail())
+    {
+        cout << "ERROR -- You did not enter an integer";
+        // get rid of failure state
+        cin.clear(); 
+        // discard 'bad' character(s) 
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     } else {
-        return -1;
+        cout << "connecting to ip: " << LOAD_BALANCER_IP << "on port: " << LOAD_BALANCER_PORT << " weight: " << nodeWeight << endl;
+        unique_ptr<Node> node = make_unique<Node>(LOAD_BALANCER_IP, LOAD_BALANCER_PORT, nodeWeight);
+
+        if (node->error_flag == -1)
+            return -1;
+
+        if (!node->loadbalancerRegisteration()){
+            cout << "node registered";
+
+        } else {
+            return -1;
+        }
     }
 
-    
     return 0;
 }
