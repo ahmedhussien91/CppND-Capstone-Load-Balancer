@@ -2,6 +2,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include <limits>
 #include "request.h"
 
 using namespace std;
@@ -20,8 +21,17 @@ int main() {
         requestCounter++;
         cout << "Please Enter Job Duration(in Seconds) - Job-" << requestCounter << ": ";
         cin >> requestTime; // halts here if no input
-        request->setRequestTime(requestTime);
-        request->sendJobRequest();
+        if (cin.fail())
+        {
+            cout << "ERROR -- You did not enter an integer";
+            // get rid of failure state
+            cin.clear(); 
+            // discard 'bad' character(s) 
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            request->setRequestTime(requestTime);
+            request->sendJobRequest();
+        }
     }
     return 0;
 }

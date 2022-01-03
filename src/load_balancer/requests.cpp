@@ -1,17 +1,17 @@
-#include "jobs.h"
+#include "requests.h"
 #include <iostream>
 #include <sys/types.h>
 #include <arpa/inet.h>
 
 #define MAX_DATA_SIZE 1024
 
-int Jobs::jobsCounter=0;
+int Requests::jobsCounter=0;
 
-Jobs::Jobs(int port) {
+Requests::Requests(int port) {
     this->port = port;
 }
 
-void Jobs::Jobs_ReceiveJobs(int job_info, string client_ip, int port) {
+void Requests::Jobs_ReceiveJobs(int job_info, string client_ip, int port) {
     Job* J = new Job();
     jobsCounter++;
     J->JobID = jobsCounter;
@@ -21,11 +21,11 @@ void Jobs::Jobs_ReceiveJobs(int job_info, string client_ip, int port) {
     J->startTime = std::chrono::system_clock::now();
     {
         std::lock_guard<std::mutex> lock1(mtx);
-        jobs.push_back(J);
+        requests.push_back(J);
     }
 }
 
-void Jobs::run() {
+void Requests::run() {
     int sock;
     struct sockaddr_in servaddr, cliaddr;
     char buffer[MAX_DATA_SIZE];
@@ -71,15 +71,15 @@ void Jobs::run() {
 
 }
 
-void Jobs::sortByRemainingTime(vector<Job> &job_list) {
+void Requests::sortByRemainingTime(vector<Job> &job_list) {
     
 }
-void Jobs::updateRemainingTimeForNewElements(vector<Job> & job_list) {
+void Requests::updateRemainingTimeForNewElements(vector<Job> & job_list) {
 
 }
-int Jobs::calculateTQ(vector<Job> &job_list) {
+int Requests::calculateTQ(vector<Job> &job_list) {
 
 }
-void Jobs::CalculateWaitTurnAroundContextTime(vector<Job> &job_list) {
+void Requests::CalculateWaitTurnAroundContextTime(vector<Job> &job_list) {
 
 }

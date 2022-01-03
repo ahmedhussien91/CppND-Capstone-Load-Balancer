@@ -24,12 +24,12 @@ struct Job {
     int ClientPort;
 };
 
-class Jobs {
+class Requests {
 public:    
-    Jobs(int port);
+    Requests(int port);
     void Jobs_ReceiveJobs(int job_info, string client_ip, int port);
     //mutex Jobs_getMutex() {return mtx;}
-    vector<Job*> Jobs_getJobsList() {return jobs;}
+    vector<Job*> Jobs_getJobsList() {return requests;}
     void run();
     void processIn(char * buffer, int len, sockaddr * client, int client_len);
     void sortByRemainingTime(vector<Job> &job_list);
@@ -41,5 +41,5 @@ private:
     int port;
     static int jobsCounter;
     mutex mtx;
-    vector<Job*> jobs;
+    vector<Job*> requests;
 };
