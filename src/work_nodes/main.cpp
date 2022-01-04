@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <limits>
+
 #include "node.h"
 
 using namespace std;
@@ -29,6 +30,11 @@ int main() {
 
         if (!node->loadbalancerRegisteration()){
             cout << "node registered";
+            int n = 1;
+            while(n > 0) {
+                n = node->loadbalancerRegisteration(); // halts here waiting on reception of request
+                std::thread t(&Node::executeRequest,  node.get(), n); // execute request in a separate thread
+            }
 
         } else {
             return -1;

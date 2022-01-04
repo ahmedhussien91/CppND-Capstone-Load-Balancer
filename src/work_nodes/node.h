@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
+#include <thread>
 
 using namespace std;
 
@@ -11,7 +12,8 @@ class Node {
 public:
     Node(string loadBalancerIP,int loadbalancerPort, int NodeWeight);
     int loadbalancerRegisteration();
-
+    int readJobFromLoadBalancer();
+    void executeRequest(int request_no_of_seconds);
 
     int error_flag=0;
 private:

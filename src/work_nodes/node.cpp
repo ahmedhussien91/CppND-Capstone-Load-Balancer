@@ -4,9 +4,13 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
+#include <sstream>
+#include <chrono>
 #include "node.h"
 
 using namespace std;
+
+#define MAX_DATA_SIZE 1024 
 
 
 Node::Node(string loadBalancerIP,int loadbalancerPort, int NodeWeight):loadBalancerIP(loadBalancerIP),
@@ -27,22 +31,35 @@ Node::Node(string loadBalancerIP,int loadbalancerPort, int NodeWeight):loadBalan
     
 int Node::loadbalancerRegisteration() {
     // send UDP Request
-    struct sockaddr_in localAddress;
-    socklen_t addressLength = sizeof(localAddress);
-
     msg = "weight: " + to_string(nodeWeight);
         
     sendto(sock,  msg.c_str() , msg.length(),
     MSG_CONFIRM, (const struct sockaddr *) &serv_addr, 
         sizeof(serv_addr));
-
-    getsockname(sock, (struct sockaddr*)&localAddress,   \
-                &addressLength);
-    string ip(inet_ntoa(localAddress.sin_addr));
-
-    auto str =  "ip: " +  ip
-        + "\nport: "
-        + to_string((int) ntohs(localAddress.sin_port));
-    cout << str << endl;
+    
     return 0;
+}
+
+int Node::readJobFromLoadBalancer() {
+    char buf[MAX_DATA_SIZE];
+    int number_of_seconds;
+    socklen_t len;
+    int n = recvfrom(sock, (char *) buf, MAX_DATA_SIZE, MSG_WAITALL, 
+        (struct sockaddr *) &serv_addr, &len);
+    if(n>0) {
+        string s(buf), word;
+        stringstream ss(s);
+        ss >> word >> number_of_seconds;
+#ifdef DEBUG    
+        cout << "Received: "<< s << endl;
+#endif
+        return number_of_seconds;
+    } else {
+        return 0;
+    }
+}
+
+void Node::executeRequest(int request_no_of_seconds) {
+    // wait for requested number of seconds to complete
+    std::this_thread::sleep_for(std::chrono::seconds(request_no_of_seconds));
 }
