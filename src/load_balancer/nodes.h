@@ -1,3 +1,6 @@
+#ifndef NODE_H_
+#define NODE_H_
+
 #include <vector>
 #include <mutex>
 
@@ -30,3 +33,5 @@ private:
     static int nodeCount;
     mutex mtx;
 };
+
+#endif

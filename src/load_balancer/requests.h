@@ -1,3 +1,6 @@
+#ifndef REQUESTS_H_
+#define REQUESTS_H_
+
 #include <vector>
 #include <mutex>
 #include <chrono>
@@ -42,3 +45,5 @@ private:
     mutex mtx;
     vector<Job*> requests;
 };
+
+#endif

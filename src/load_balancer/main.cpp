@@ -3,6 +3,7 @@
 #include <thread>
 #include "nodes.h"
 #include "requests.h"
+#include "loadbalancer.h"
 
 using namespace std;
 
@@ -14,11 +15,13 @@ int main() {
     thread nodesThread(&Nodes::run, nodes); // start nodes thread
 
     Requests* requests = new Requests(JOBS_PORT);
-    thread jobsThread(&Requests::run, requests); // start requests or requests threads
+    thread requestsThread(&Requests::run, requests); // start requests or requests threads
 
-    // LoadBalancer * loadbalancer = new LoadBalancer(requests, nodes);
-    // thread balancerThread(&LoadBalancer::run, loadbalancer); // start load balancer threads
-    jobsThread.join();
+    LoadBalancer * loadbalancer = new LoadBalancer(nodes, requests);
+    thread balancerThread(&LoadBalancer::run, loadbalancer); // start load balancer threads
+    
+    requestsThread.join();
     nodesThread.join();
+    balancerThread.join();
     
 }
